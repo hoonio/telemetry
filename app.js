@@ -20,7 +20,6 @@ dashboard.controller('Ctrl', ['$scope', 'socket',
     };
 }]);
 
-
 dashboard.factory('socket', function ($rootScope) {
   var socket = io.connect('http://ec2-54-228-248-101.eu-west-1.compute.amazonaws.com:8888/telemetry');
   return {

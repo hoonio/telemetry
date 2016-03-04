@@ -1,0 +1,16 @@
+{
+  "name": "aircraft",
+  "version": "1.0.0",
+  "description": "FE test",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Hoonio",
+  "license": "MIT",
+  "dependencies": {
+    "autobahn": "^0.9.9",
+    "express": "^4.13.4"
+  }
+}

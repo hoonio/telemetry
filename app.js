@@ -14,7 +14,10 @@ dashboard.controller('Ctrl', ['$scope', '$timeout',
         "airspeed": 0
       }
     };
-    $scope.connection = 0; // 0 connecting, 1 online, 2 offline
+    $scope.altitude = [0,0,0,0] // track count, total, min, max
+    $scope.airspeed = [0,0,0,0] // track count, total, min, max
+
+    $scope.connection = 2; // 0 connecting, 1 online, 2 offline
     $scope.messages = [];
     // When we see a new msg event from the server
     // socket.on('new:msg', function(message) {
@@ -38,16 +41,29 @@ dashboard.controller('Ctrl', ['$scope', '$timeout',
       console.log('write data: '+ newData)
       if (newData == 'hello, world'){
         $scope.name = 'Connection established';
-        $scope.connection = 1;
+        $scope.connection = 0;
       }
       else if (newData == 'The quick jet plane jetwashed my lazy prop'){
         $scope.name = 'The quick jet plane jetwashed my lazy prop'
         $scope.connection = 2;
       }
       else {
+        $scope.connection = 1;
         $scope.values = JSON.parse(newData);
+        if ($scope.altitude[0] == 0){
+          $scope.airspeed[2] = JSON.parse(newData).telemetry.airspeed; // a small hack to record minimum speed without complicating the logic
+        }
+        updateStat($scope.values.telemetry.altitude,$scope.altitude);
+        updateStat($scope.values.telemetry.airspeed,$scope.airspeed);
       }
       $scope.$apply();
+    }
+
+    function updateStat(newInput, history){
+      history[0]++;
+      history[1]+=newInput;
+      if (newInput<history[2]) { history[2]=newInput; }
+      if (newInput>history[3]) { history[3]=newInput; }
     }
 
     $timeout($scope.connect(), 10000);

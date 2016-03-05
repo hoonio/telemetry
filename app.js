@@ -1,7 +1,7 @@
 var dashboard = angular.module('dashboard', []);
 
-dashboard.controller('Ctrl', ['$scope', 'socket',
-  function($scope, socket) {
+dashboard.controller('Ctrl', ['$scope', '$timeout',
+  function($scope, $timeout) {
     $scope.name = "Aircraft dashboard";
 
     $scope.values = {
@@ -14,6 +14,7 @@ dashboard.controller('Ctrl', ['$scope', 'socket',
         "airspeed": 0
       }
     };
+    $scope.connection = 0; // 0 connecting, 1 online, 2 offline
     $scope.messages = [];
     // When we see a new msg event from the server
     // socket.on('new:msg', function(message) {
@@ -24,30 +25,33 @@ dashboard.controller('Ctrl', ['$scope', 'socket',
     // socket.init();
       wsUri = 'ws://ec2-54-228-248-101.eu-west-1.compute.amazonaws.com:8888/telemetry';
       websocket = new WebSocket(wsUri);
-      console.log('connect to websocket')
+      console.log('connect to websocket');
+      $scope.connection = 0;
       websocket.onmessage = function(evt){
         // console.log('message received: ' + $scope.messages);
         // $scope.messages.push(evt.data);
         updateValues(evt.data);
       }
+    };
 
     function updateValues(newData) {
       console.log('write data: '+ newData)
       if (newData == 'hello, world'){
-        $scope.name = 'Connection established'
+        $scope.name = 'Connection established';
+        $scope.connection = 1;
+      }
+      else if (newData == 'The quick jet plane jetwashed my lazy prop'){
+        $scope.name = 'The quick jet plane jetwashed my lazy prop'
+        $scope.connection = 2;
       }
       else {
-        $scope.values = JSON.parse(newData);      
+        $scope.values = JSON.parse(newData);
       }
       $scope.$apply();
     }
 
-    //   socket.emit('broadcast:msg', {
-    //     message: $scope.message
-    //   });
-    //   $scope.messages.push($scope.message);
-    //   $scope.message = '';
-    };
+    $timeout($scope.connect(), 10000);
+
 }]);
 
 dashboard.factory('socket', function ($rootScope) {

@@ -3,8 +3,8 @@
 var express = require('express')
   , fs      = require('fs')
   , http    = require('http')
-  , https   = require('https')
-  , autobahn = require('autobahn');
+  , https   = require('https');
+  // , autobahn = require('autobahn');
 
 var app = express();
 app.set('port', process.env.PORT || 8080);
@@ -19,10 +19,10 @@ http.createServer(app).listen(app.get('port'), function() {
   console.log("Listening on " + app.get('port'));
 });
 
-var connection = new autobahn.Connection({
-         url: 'ws://ec2-54-228-248-101.eu-west-1.compute.amazonaws.com:8888/telemetry/',
-         realm: 'realm1'
-      });
+// var connection = new autobahn.Connection({
+//          url: 'ws://ec2-54-228-248-101.eu-west-1.compute.amazonaws.com:8888/telemetry/',
+//          realm: 'realm1'
+//       });
 //
 // connection.onopen = function (session) {
 //   console.log('function executed')

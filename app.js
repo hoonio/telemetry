@@ -19,7 +19,7 @@ dashboard.controller('Ctrl', ['$scope', '$timeout',
     $scope.connection = 2; // 0 connecting, 1 online, 2 offline
     $scope.flapsStyle = {'margin-left':0};
 
-    $scope.connect = function() {
+    $scope.connect = () => {
     // socket.init();
       wsUri = 'ws://ec2-54-228-248-101.eu-west-1.compute.amazonaws.com:8888/telemetry';
       websocket = new WebSocket(wsUri);
@@ -30,8 +30,8 @@ dashboard.controller('Ctrl', ['$scope', '$timeout',
       }
     };
 
-    function updateValues(newData) {
-      console.log('write data: '+ newData)
+    updateValues = (newData) => {
+      // console.log('write data: '+ newData)
       if (newData == 'hello, world'){
         $scope.name = 'Connection established';
         $scope.connection = 0;
@@ -49,11 +49,15 @@ dashboard.controller('Ctrl', ['$scope', '$timeout',
         updateStat($scope.values.telemetry.altitude,$scope.altitude);
         updateStat($scope.values.telemetry.airspeed,$scope.airspeed);
         $scope.flapsStyle = {'margin-left': 23*$scope.values.control.flaps + 'px'};
+        $scope.speedNeedleStyle = {'transform': 'rotate('+$scope.values.telemetry.airspeed*360/500+'deg)'}
+        $scope.altitudeSmallNeedleStyle = {'transform': 'rotate('+$scope.values.telemetry.altitude*360/1000+'deg)'}
+        $scope.altitudeBigNeedleStyle = {'transform': 'rotate('+($scope.values.telemetry.altitude%1000)*360/100+'deg)'}
+        // redrawNeedle('speed-needle',$scope.values.telemetry.airspeed);
       }
       $scope.$apply();
     }
 
-    function updateStat(newInput, history){
+    updateStat = (newInput, history) => {
       // could record each data point, but only need average, min, max, so only keeping the count and total
       history[0]++;
       history[1]+=newInput;

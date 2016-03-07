@@ -16,53 +16,62 @@
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="container" ng-controller="Ctrl" style="background-image:url('img/bg.png'); width:1000px; height:600px; padding: 80px 50px;">
-    <div class="row">
-      <div class="col-sm-5">
-        <div class="row" style="padding:170px 160px 80px; font-size:30px; letter-spacing:9px;color:white;">
-        {{values.telemetry.airspeed}}
+    <div class="container" ng-controller="Ctrl" style="background-image:url('img/bg.png'); width:1000px; height:600px; padding: 80px 50px; position:relative;">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="row" style="padding:170px 160px 80px; font-size:30px; letter-spacing:9px;color:white;">
+          {{values.telemetry.airspeed}}
+          </div>
+          <div class="row" style="padding:38px 150px; font-size:20px; letter-spacing:1px;color:white;">
+            <span class="">{{airspeed[2]}}</span>
+            <span class="row">{{airspeed[1]}}</span>
+            <span class="">{{airspeed[3]/airspeed[0]  | number : 2}}</span>
+          </div>
         </div>
-        <div class="row" style="padding:38px 150px; font-size:20px; letter-spacing:1px;color:white;">
-          <span class="">{{airspeed[2]}}</span>
-          <span class="row">{{airspeed[1]}}</span>
-          <span class="">{{airspeed[3]/airspeed[0]  | number : 2}}</span>
+        <div class="col-sm-4">
+          <div  style="padding:180px 86px 80px; font-size:20px; letter-spacing:2px;color:white;">
+            {{values.telemetry.altitude}}
+          </div>
+            <div class="row" style="padding:38px 110px; font-size:20px; letter-spacing:1px;color:white;">
+              <span class="">{{altitude[2]}}</span>
+              <span class="">{{altitude[1]}}</span>
+              <span class="">{{altitude[3]/altitude[0]  | number : 2}}</span>
+            </div>
+        </div>
+        <div class="col-sm-3" style="padding-left:88px;">
+          <div id="landinggear" class="row" style="margin-top: 40px;">
+            <img ng-hide="values.control.landing_gear" src="img/landing-gear-off.png" />
+            <!-- Gear:{{values.control.landing_gear}} -->
+            <img style="margin-left:70px;" ng-show="values.control.landing_gear" src="img/landing-gear-on.png" />
+          </div>
+          <div id="flaps" class="row" style="margin-top: 85px;">
+            <img ng-style="flapsStyle" src="img/flaps-switch.png" />
+          </div>
+          <div id="connectionstate" style="margin-top: 120px;">
+            <div ng-show="connection==0">
+              <img src="img/connection-connecting.png" />
+              <span style="color:white; font-size:14px;">Connecting</span>
+            </div>
+            <div ng-show="connection==1">
+              <img src="img/connection-online.png" />
+              <span style="color:white; font-size:14px;">Online</span>
+            </div>
+            <div ng-show="connection==2">
+              <img src="img/connection-offline.png" />
+              <span style="color:white; font-size:14px;">Offline</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div  style="padding:180px 86px 80px; font-size:20px; letter-spacing:2px;color:white;">
-          {{values.telemetry.altitude}}
-        </div>
-        <div class="row" style="padding:38px 110px; font-size:20px; letter-spacing:1px;color:white;">
-          <span class="">{{altitude[2]}}</span>
-          <span class="">{{altitude[1]}}</span>
-          <span class="">{{altitude[3]/altitude[0]  | number : 2}}</span>
-        </div>
-    </div>
-      <div class="col-sm-3" style="padding-left:88px;">
-        <div id="landinggear" class="row" style="margin-top: 40px;">
-          <img ng-hide="values.control.landing_gear" src="img/landing-gear-off.png" />
-          <!-- Gear:{{values.control.landing_gear}} -->
-          <img style="margin-left:70px;" ng-show="values.control.landing_gear" src="img/landing-gear-on.png" />
-        </div>
-        <div id="flaps" class="row" style="margin-top: 85px;">
-          <img ng-style="flapsStyle" src="img/flaps-switch.png" />
-        </div>
-        <div id="connectionstate" style="margin-top: 120px;">
-          <div ng-show="connection==0">
-            <img src="img/connection-connecting.png" />
-            <span style="color:white; font-size:14px;">Connecting</span>
-          </div>
-          <div ng-show="connection==1">
-            <img src="img/connection-online.png" />
-            <span style="color:white; font-size:14px;">Online</span>
-          </div>
-          <div ng-show="connection==2">
-            <img src="img/connection-offline.png" />
-            <span style="color:white; font-size:14px;">Offline</span>
-          </div>
-        </div>
+      <div style="position:absolute; top:140px; left:225px">
+        <img ng-style="speedNeedleStyle" style="transform-origin: bottom;" id="speed-needle" src="img/needle-big.png" />
       </div>
-    </div>
+      <div style="position:absolute; top:174px; left:562px">
+        <img ng-style="altitudeBigNeedleStyle" style="transform-origin: bottom;" id="speed-needle" src="img/needle-small.png" />
+      </div>
+      <div style="position:absolute; top:140px; left:560px">
+        <img ng-style="altitudeSmallNeedleStyle" style="transform-origin: bottom;" id="speed-needle" src="img/needle-big.png" />
+      </div>
       <!-- <input type="text" ng-model="message"> -->
       <!-- <button ng-click="connect()">Connect</button> -->
     </div>
